@@ -1,0 +1,19 @@
+{
+    "name": "otas/testing",
+    "description": "a laravel package that contain testing method to help test rest api endpoints",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Otas\\Testing\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "omar-ashraf-s",
+            "email": "o.ashraf@otas.net"
+        }
+    ],
+    "require-dev": {
+        "orchestra/testbench": "^10.3"
+    }
+}
