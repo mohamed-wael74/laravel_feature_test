@@ -10,7 +10,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "laravel/framework": ">=9"
+        "laravel/framework": ">=9",
+        "laravel/passport": ">=10"
     },    
     "require-dev": {
         "orchestra/testbench": "^10.3"
