@@ -1,6 +1,6 @@
 {
     "name": "otas/testing",
-    "description": "a laravel package that contain testing method to help test rest api endpoints",
+    "description": "A Laravel package that provides utilities to help test REST API endpoints.",
     "license": "MIT",
     "authors": [
         {
@@ -8,6 +8,10 @@
             "email": "o.ashraf@otas.net"
         }
     ],
+    "minimum-stability": "dev",
+    "require": {
+        "laravel/framework": ">=9"
+    },    
     "require-dev": {
         "orchestra/testbench": "^10.3"
     },
