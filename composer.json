@@ -11,6 +11,13 @@
     "require-dev": {
         "orchestra/testbench": "^10.3"
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Otas\\Testing\\OtasTestingServiceProvider"
+            ]
+        }
+    },    
     "autoload": {
         "psr-4": {
             "Otas\\Testing\\": "src/"
