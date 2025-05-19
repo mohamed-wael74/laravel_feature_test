@@ -25,9 +25,7 @@ abstract class TestCaseAssertion extends TestCasePropertiesSetter
 
     public function assertValidationRulesMatch(array $validationRules = [], ?FormRequest $request = null): self
     {
-        if ($request == null) {
-            return $this;
-        }
+        if ($request == null) return $this;
         $this->assertEquals($validationRules, $request->rules());
         return $this;
     }
@@ -35,9 +33,7 @@ abstract class TestCaseAssertion extends TestCasePropertiesSetter
     public function assertAuthUser(?Response $response = null): self
     {
         $user = auth($this->authGuard)->user();
-        if ($user == null) {
-            $response == null ? $this->assertTrue($user == null, 'Unauthenticated User') : $response->assertStatus(403);
-        }
+        if ($user == null) $response == null ? $this->assertTrue($user == null, 'Unauthenticated User') : $response->assertStatus(403);
         return $this;
     }
 
@@ -59,9 +55,7 @@ abstract class TestCaseAssertion extends TestCasePropertiesSetter
 
     public function assertResponseDataTypes(AssertableJson $json, string $key)
     {
-        if (\in_array($key, \array_keys($this->responseDataType))) {
-            $json->whereType($key, $this->responseDataType[$key]);
-        }
+        if (\in_array($key, \array_keys($this->responseDataType))) $json->whereType($key, $this->responseDataType[$key]);
     }
 
     public function assertDatabaseHasModelObject(bool $isSoftDelete = false)
@@ -85,30 +79,26 @@ abstract class TestCaseAssertion extends TestCasePropertiesSetter
                 \is_int($key) ? $this->numericSingleObjectStructureKeysToResponseAssertion($json, $value) : $this->stringSingleObjectStructureKeysToResponseAssertion($json, $key, $value);
             }
         }
-        if (! $this->responseExactStructure) {
-            $json->etc();
-        }
+        if (! $this->responseExactStructure) $json->etc();
     }
 
     # Private Helpers
 
     private function numericSingleObjectStructureKeysToResponseAssertion(AssertableJson $json, $value): void
     {
-        if (\is_array($value)) {
-            return;
-        }
+        if (\is_array($value)) return;
         switch (true) {
-            case $value == 'message' && request()->method() == 'GET':
-                break;
-            case \in_array($value, $this->modelRelationsResponseKeys):
+            case $value == 'message' && request()->method() == 'GET' :
+            break;
+            case \in_array($value, $this->modelRelationsResponseKeys) :
                 $json->has($value);
                 $this->assertResponseDataTypes($json, $value);
-                break;
-            case ! \in_array($value, \array_merge($this->singleObjectAttributes, \array_keys($this->attributesAliases))):
+            break;
+            case ! \in_array($value, \array_merge($this->singleObjectAttributes, \array_keys($this->attributesAliases))) :
                 $json->has($value);
                 $this->assertResponseDataTypes($json, $value);
-                break;
-            default:
+            break;
+            default :
                 $modelAttributeName = \in_array($value, \array_keys($this->attributesAliases)) ? $this->attributesAliases[$value] : $value;
                 if (Str::endsWith($modelAttributeName, ['_at', '_date'])) {
                     $json->has($value);
@@ -122,32 +112,30 @@ abstract class TestCaseAssertion extends TestCasePropertiesSetter
     private function stringSingleObjectStructureKeysToResponseAssertion(AssertableJson $json, string $key, $value): void
     {
         switch (true) {
-            case $key == $this->modelName && \is_array($value) && $value != null:
+            case $key == $this->modelName && \is_array($value) && $value != null :
                 $json->has($key, function (AssertableJson $nestedJson) use ($key, $value) {
                     $this->assertStructure($nestedJson, false, $value);
                 });
-                break;
-            case $key == 'missing' && $value != null:
+            break;
+            case $key == 'missing' && $value != null :
                 $json->missingAll($value);
-                break;
+            break;
             case ! \in_array($key, \array_merge($this->singleObjectAttributes, \array_keys($this->attributesAliases), ['message', 'missing'])):
                 $json->has($key);
                 $this->assertResponseDataTypes($json, $key);
-                break;
+            break;
         }
     }
 
     private function numericCollectionStructureKeysToResponseAssertion(AssertableJson $json, $value): void
     {
-        if (\is_array($value)) {
-            return;
-        }
+        if (\is_array($value)) return;
         switch (true) {
-            case \in_array($value, \array_merge($this->modelRelationsResponseKeys, ['meta', 'links'])):
+            case \in_array($value, \array_merge($this->modelRelationsResponseKeys, ['meta', 'links'])) :
                 $json->has($value);
                 $this->assertResponseDataTypes($json, $value);
-                break;
-            default:
+            break;
+            default :
                 $modelAttributeName = \in_array($value, \array_keys($this->attributesAliases)) ? $this->attributesAliases[$value] : $value;
                 if (Str::endsWith($modelAttributeName, ['_at', '_date'])) {
                     $json->has($value);
@@ -161,23 +149,21 @@ abstract class TestCaseAssertion extends TestCasePropertiesSetter
     private function stringCollectionStructureKeysToResponseAssertion(AssertableJson $json, string $key, $value): void
     {
         switch (true) {
-            case $key == $this->collectionKeyName && \is_array($value) && $value != null:
+            case $key == $this->collectionKeyName && \is_array($value) && $value != null :
                 $actualCollectionCount = $this->modelObject != null ? $this->indexCollectionCount + 1 : $this->indexCollectionCount;
                 $json->has($this->collectionKeyName, $actualCollectionCount, function (AssertableJson $nestedJson) use ($key, $value) {
                     $this->assertStructure($nestedJson, true, $value);
-                    if (! $this->responseExactStructure) {
-                        $nestedJson->etc();
-                    }
+                    if (! $this->responseExactStructure) $nestedJson->etc();
                 });
                 $this->assertResponseDataTypes($json, $key);
-                break;
-            case ($key == 'missing' || $key == 'missingAll') && $value != null:
+            break;
+            case ($key == 'missing' || $key == 'missingAll') && $value != null :
                 $json->missingAll($value);
-                break;
+            break;
             case ! \in_array($key, \array_merge($this->collectionAttributes, \array_keys($this->attributesAliases), ['missing', 'missingAll'])):
                 $json->has($key);
                 $this->assertResponseDataTypes($json, $key);
-                break;
+            break;
         }
     }
 }
