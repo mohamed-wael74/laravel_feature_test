@@ -16,4 +16,8 @@ A lightweight Laravel package designed to simplify **feature testing** for your 
 ## 📦 Installation
 
 ```bash
-composer require ah-mabrouk/laravel-feature-test --dev
+composer require ah-mabrouk/laravel-feature-test
+
+## License
+
+Otas/Testing package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
