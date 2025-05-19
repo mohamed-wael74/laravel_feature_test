@@ -1,5 +1,5 @@
 {
-    "name": "otas/testing",
+    "name": "laravel-feature-test",
     "description": "A Laravel package that provides utilities to help test REST API endpoints.",
     "license": "MIT",
     "authors": [
