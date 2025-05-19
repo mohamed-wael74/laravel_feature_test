@@ -21,4 +21,4 @@ composer require solutionplus/laravel-feature-test
 
 ## License
 
-Otas/Testing package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Solutionplus/FeatureTest package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
