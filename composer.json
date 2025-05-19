@@ -19,13 +19,13 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Otas\\Testing\\OtasTestingServiceProvider"
+                "Solutionplus\\FeatureTest\\OtasTestingServiceProvider"
             ]
         }
     },    
     "autoload": {
         "psr-4": {
-            "Otas\\Testing\\": "src/"
+            "Solutionplus\\FeatureTest\\": "src/"
         }
     },    
     "autoload-dev": {

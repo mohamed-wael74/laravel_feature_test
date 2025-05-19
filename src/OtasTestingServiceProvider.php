@@ -1,6 +1,6 @@
 <?php
 
-namespace Otas\Testing;
+namespace Solutionplus\FeatureTest;
 
 use Illuminate\Support\ServiceProvider;
 

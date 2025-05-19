@@ -1,6 +1,6 @@
 <?php
 
-namespace Otas\Testing\Helpers;
+namespace Solutionplus\FeatureTest\Helpers;
 
 use Illuminate\Support\Str;
 use Laravel\Passport\Passport;
@@ -13,7 +13,8 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCasePropertiesSetter extends BaseTestCase
 {
-    use CreatesApplication, WithFaker;
+    use CreatesApplication;
+    use WithFaker;
 
     public string $authGuard;
     public Model $authUser;
@@ -91,7 +92,7 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         return $this;
     }
 
-    public function setAuthGuard(string $guard = '') : self
+    public function setAuthGuard(string $guard = ''): self
     {
         $this->authGuard = $guard != null ? $guard : 'api';
         return $this;
@@ -140,7 +141,7 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
 
     public function setModelDbTableName(string $modelDbTableName = ''): self
     {
-        $this->modelDbTableName = $modelDbTableName != null ? $modelDbTableName : Str::plural(Str::snake(\str_replace('App\Models\\' , '', $this->modelObjectClassWithNamespace)));
+        $this->modelDbTableName = $modelDbTableName != null ? $modelDbTableName : Str::plural(Str::snake(\str_replace('App\Models\\', '', $this->modelObjectClassWithNamespace)));
         return $this;
     }
 
@@ -265,13 +266,17 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
     {
         if ($propertiesTypesMap != null) {
             foreach ($propertiesTypesMap as $key => $value) {
-                if (\is_int($key)) abort(500, 'The method setResponseDataType() parameter must be an associative array or an empty array if no model response keys need to be checked for its types');
+                if (\is_int($key)) {
+                    abort(500, 'The method setResponseDataType() parameter must be an associative array or an empty array if no model response keys need to be checked for its types');
+                }
             }
         }
         $notExistingResponseKeys = \array_filter(\array_filter(
-            \array_keys($propertiesTypesMap), function ($key) {
-            return ! \in_array($key, \array_merge($this->singleObjectAttributes, $this->collectionAttributes, $this->modelRelationsResponseKeys, \array_keys($this->attributesAliases)));
-        }));
+            \array_keys($propertiesTypesMap),
+            function ($key) {
+                return ! \in_array($key, \array_merge($this->singleObjectAttributes, $this->collectionAttributes, $this->modelRelationsResponseKeys, \array_keys($this->attributesAliases)));
+            }
+        ));
         if ($propertiesTypesMap != null && \count($notExistingResponseKeys) > 0) {
             $stringListOfNotExistingResponseKeys = \implode(', ', $notExistingResponseKeys);
             abort(500, "One or more properties founded in responseDataType array while its not exists in defined response attributes, relations or aliases. a list of it can be found here [{$stringListOfNotExistingResponseKeys}]");
@@ -302,8 +307,7 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         string $requestMethod = 'store'|'update'|'destroy',
         array $requestPayload = [],
         Model|null $factory = null
-    ): array
-    {
+    ): array {
         $factory = $factory != null ? $factory : $this->modelObjectClassWithNamespace::factory()->make();
         $validationRulesAttributeName = "{$requestMethod}ValidationRules";
         $data = [];
@@ -311,15 +315,15 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
             switch (true) {
                 case \in_array($key, \array_keys($this->$validationRulesAttributeName)) :
                     $data[$key] = $value;
-                break;
+                    break;
                 case \in_array($key, $this->attributesAliases) :
                     $data[\array_flip($this->attributesAliases)[$key]] = $value;
-                break;
+                    break;
                 default:
-                break;
+                    break;
             }
         }
-        
+
         return \array_merge(\array_filter($data), $requestPayload);
     }
 
@@ -350,7 +354,9 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
     public function setPolymorphicRelationClasses(array $polymorphicRelationClasses = []): self
     {
         $this->polymorphicRelationClasses = $polymorphicRelationClasses;
-        if ($this->isPolymorphicModel && \count($this->polymorphicRelationClasses) == 0) abort(500, 'the method polymorphicRelationClasses must return an array of related polymorphic model classes instead of an empty array');
+        if ($this->isPolymorphicModel && \count($this->polymorphicRelationClasses) == 0) {
+            abort(500, 'the method polymorphicRelationClasses must return an array of related polymorphic model classes instead of an empty array');
+        }
         return $this;
     }
 
@@ -362,7 +368,9 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
 
     protected function sequenceValue(int $sequenceIndex = 0, array $incrementables = []): array
     {
-        if ($sequenceIndex == 0) return [];
+        if ($sequenceIndex == 0) {
+            return [];
+        }
 
         return \array_fill_keys($incrementables, $sequenceIndex + 1);
     }
