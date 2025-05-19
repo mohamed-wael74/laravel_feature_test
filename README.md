@@ -17,6 +17,7 @@ A lightweight Laravel package designed to simplify **feature testing** for your 
 
 ```bash
 composer require ah-mabrouk/laravel-feature-test
+```
 
 ## License
 
