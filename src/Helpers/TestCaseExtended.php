@@ -14,15 +14,16 @@ abstract class TestCaseExtended extends TestCaseAssertion
         array $customFactoryData = [],
         array $parameters = [],
         string $routeName = '',
-        array $parentNestedRoutesIdentifiers = []
-    ) : Response|null
+        array $parentNestedRoutesIdentifiers = [],
+        array $incrementableAttributes = []
+    ): Response|null 
     {
         $routeName = $routeName != null ? $routeName : "{$this->routeName}.index";
         $this->withoutExceptionHandling();
         $this->assertRouteExists($routeName)
             ->setIndexCollectionCount($collectionCount);
 
-        $this->factoryCreate($this->indexCollectionCount, $customFactoryData);
+        $this->factoryCreate($this->indexCollectionCount, $customFactoryData, $incrementableAttributes);
         $response = $this->getJson(route($routeName, $parentNestedRoutesIdentifiers), $parameters)->assertOk();
         if ($assertAuth) $this->assertAuthUser($response);
 
@@ -36,7 +37,7 @@ abstract class TestCaseExtended extends TestCaseAssertion
         string $routeName = '',
         Model|null $factory = null,
         array $parentNestedRoutesIdentifiers = []
-    ) : Response|null
+    ): Response|null 
     {
         $routeName = $routeName != null ? $routeName : "{$this->routeName}.store";
         $this->withoutExceptionHandling();
@@ -57,15 +58,16 @@ abstract class TestCaseExtended extends TestCaseAssertion
     public function show(
         bool $assertAuth = true,
         string $routeName = '',
-        array $parentNestedRoutesIdentifiers = []
-    ) : Response|null
+        array $parentNestedRoutesIdentifiers = [],
+        array $parameters = []
+    ): Response|null 
     {
         $routeName = $routeName != null ? $routeName : "{$this->routeName}.show";
         $this->withoutExceptionHandling();
         $this->assertRouteExists($routeName);
 
         $modelIdentifier = $this->modelObjectClassIdentifier;
-        $response = $this->getJson(route($routeName, \array_merge($parentNestedRoutesIdentifiers, [$this->modelObject->$modelIdentifier])))->assertOk();
+        $response = $this->getJson(route($routeName, \array_merge($parentNestedRoutesIdentifiers, [$this->modelObject->$modelIdentifier], $parameters)))->assertOk();
         if ($assertAuth) $this->assertAuthUser($response);
 
         return $this->assertResponseStructure(response: $response, isCollection: false);
@@ -78,7 +80,7 @@ abstract class TestCaseExtended extends TestCaseAssertion
         string $routeName = '',
         Model|null $factory = null,
         array $parentNestedRoutesIdentifiers = []
-    ) : Response|null
+    ): Response|null 
     {
         $routeName = $routeName != null ? $routeName : "{$this->routeName}.update";
         $this->withoutExceptionHandling();
@@ -105,7 +107,7 @@ abstract class TestCaseExtended extends TestCaseAssertion
         Model|null $factory = null,
         array $parentNestedRoutesIdentifiers = [],
         bool $isDatabaseDelete = true
-    ) : Response|null
+    ): Response|null 
     {
         $routeName = $routeName != null ? $routeName : "{$this->routeName}.destroy";
         $this->withoutExceptionHandling();

@@ -48,7 +48,7 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
     public string $modelObjectClassWithNamespace;
     public string|null $randomPolymorphicRelationClass;
 
-    public function setUpSetter() : void
+    public function setUpSetter(): void
     {
         $this->setRouteNamespace()
             ->setAvailableLocales()
@@ -84,7 +84,7 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
             ->setResponseDataType();
     }
 
-    public function setAvailableLocales(array $locales = []) : self
+    public function setAvailableLocales(array $locales = []): self
     {
         $this->availableLocales = $locales != null ? $locales : ['en', 'ar'];
         \shuffle($this->availableLocales);
@@ -97,7 +97,7 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         return $this;
     }
 
-    public function setAuthUser(?Model $user = null, array $authUserCustomFactoryData = [], $authGuard = '') : self
+    public function setAuthUser(?Model $user = null, array $authUserCustomFactoryData = [], $authGuard = ''): self
     {
         $this->setAuthGuard($authGuard);
 
@@ -105,7 +105,7 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         return $this;
     }
 
-    private function setRouteNamespace() : self
+    private function setRouteNamespace(): self
     {
         $namespaceParts = \explode('\\', \get_class($this));
         \array_pop($namespaceParts);
@@ -113,7 +113,7 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         return $this;
     }
 
-    private function setAppRouteListAttribute() : self
+    private function setAppRouteListAttribute(): self
     {
         $routes = [];
         foreach (Route::getRoutes() as $route) {
@@ -123,13 +123,13 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         return $this;
     }
 
-    public function setAuthModelClassWithNamespace(string $modelClass = '') : self
+    public function setAuthModelClassWithNamespace(string $modelClass = ''): self
     {
         $this->authModelClass = $modelClass != null ? $modelClass : 'App\Models\User';
         return $this;
     }
 
-    public function setModelObjectClassWithNamespace(string $modelObjectClass = '') : self
+    public function setModelObjectClassWithNamespace(string $modelObjectClass = ''): self
     {
         $classNameParts = \explode('\\', \get_class($this));
         $this->modelObjectClassWithNamespace = $modelObjectClass != null ?
@@ -138,87 +138,87 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         return $this;
     }
 
-    public function setModelDbTableName(string $modelDbTableName = '') : self
+    public function setModelDbTableName(string $modelDbTableName = ''): self
     {
         $this->modelDbTableName = $modelDbTableName != null ? $modelDbTableName : Str::plural(Str::snake(\str_replace('App\Models\\' , '', $this->modelObjectClassWithNamespace)));
         return $this;
     }
 
-    private function setModelObjectClassIdentifier() : self
+    private function setModelObjectClassIdentifier(): self
     {
         $this->modelObjectClassIdentifier = (new ($this->modelObjectClassWithNamespace)())->getRouteKeyName();
         return $this;
     }
 
-    public function setModelRelationsResponseKeys(array $modelRelationsResponseKeys = []) : self
+    public function setModelRelationsResponseKeys(array $modelRelationsResponseKeys = []): self
     {
         $this->modelRelationsResponseKeys = $modelRelationsResponseKeys;
         return $this;
     }
 
-    public function setModelObject(array $modelFactoryCustomAttributes = []) : self
+    public function setModelObject(array $modelFactoryCustomAttributes = []): self
     {
         $this->modelObject = $this->factoryCreate(1, $modelFactoryCustomAttributes);
         return $this;
     }
 
-    private function setModelName() : self
+    private function setModelName(): self
     {
         $modelName = \explode('\_', \strtolower(Str::snake(get_class($this->modelObject))));
         $this->modelName = \array_pop($modelName);
         return $this;
     }
 
-    public function setRouteName(string $routeName = '') : self
+    public function setRouteName(string $routeName = ''): self
     {
         $className = \explode('\\', Str::plural(\get_class($this->modelObject)));
         $this->routeName = $routeName != null ? $routeName : \strtolower($this->routeNamespace . '.' . Str::kebab(\array_pop($className)));
         return $this;
     }
 
-    public function setIndexCollectionCount(int $indexCollectionCount = 10) : self
+    public function setIndexCollectionCount(int $indexCollectionCount = 10): self
     {
         $this->indexCollectionCount = $this->modelObject != null ? $indexCollectionCount - 1 : $indexCollectionCount;
         return $this;
     }
 
-    public function setStoreValidationRules(array $validationRules = []) : self
+    public function setStoreValidationRules(array $validationRules = []): self
     {
         $this->storeValidationRules = $validationRules;
         return $this;
     }
 
-    public function setUpdateValidationRules(array $validationRules = []) : self
+    public function setUpdateValidationRules(array $validationRules = []): self
     {
         $this->updateValidationRules = $validationRules;
         return $this;
     }
 
-    public function setDestroyValidationRules(array $validationRules = []) : self
+    public function setDestroyValidationRules(array $validationRules = []): self
     {
         $this->destroyValidationRules = $validationRules;
         return $this;
     }
 
-    public function setResponseExactStructure(bool $responseExactStructure = true) : self
+    public function setResponseExactStructure(bool $responseExactStructure = true): self
     {
         $this->responseExactStructure = $responseExactStructure;
         return $this;
     }
 
-    public function setResponseMissingAttributes(array $responseMissingAttributes = []) : self
+    public function setResponseMissingAttributes(array $responseMissingAttributes = []): self
     {
         $this->responseMissingAttributes = $responseMissingAttributes;
         return $this;
     }
 
-    public function setSingleObjectAttributes(array $attributes = []) : self
+    public function setSingleObjectAttributes(array $attributes = []): self
     {
         $this->singleObjectAttributes = \array_merge($attributes, ['missing' => $this->responseMissingAttributes]);
         return $this;
     }
 
-    public function setCollectionAttributes(array $attributes = []) : self
+    public function setCollectionAttributes(array $attributes = []): self
     {
         $this->collectionAttributes = $attributes != null ?
             \array_merge($attributes, ['missing' => $this->responseMissingAttributes])
@@ -230,13 +230,13 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         return $this;
     }
 
-    public function setAttributesAliases(array $attributesAliases = []) : self
+    public function setAttributesAliases(array $attributesAliases = []): self
     {
         $this->attributesAliases = $attributesAliases;
         return $this;
     }
 
-    public function setResponseSingleObjectStructure(string $customModelResponseKeyName = '') : self
+    public function setResponseSingleObjectStructure(string $customModelResponseKeyName = ''): self
     {
         if (request()->method() == 'DELETE') {
             $this->responseSingleObjectStructure = ['message'];
@@ -245,12 +245,12 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         $modelResponseKeyName = $customModelResponseKeyName != '' ? $customModelResponseKeyName : $this->modelName;
         $this->responseSingleObjectStructure = [
             $modelResponseKeyName => $this->singleObjectAttributes,
-            'message'
+            'message',
         ];
         return $this;
     }
 
-    public function setResponseCollectionStructure(bool $isPaginated = true, bool $replaceDataKeyWithModelPluralName = false) : self
+    public function setResponseCollectionStructure(bool $isPaginated = true, bool $replaceDataKeyWithModelPluralName = false): self
     {
         $this->collectionKeyName = $replaceDataKeyWithModelPluralName ? Str::plural($this->modelName) : 'data';
         $this->responseCollectionStructure[$this->collectionKeyName] = $this->collectionAttributes;
@@ -261,7 +261,7 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         return $this;
     }
 
-    public function setResponseDataType(array $propertiesTypesMap = []) : self
+    public function setResponseDataType(array $propertiesTypesMap = []): self
     {
         if ($propertiesTypesMap != null) {
             foreach ($propertiesTypesMap as $key => $value) {
@@ -280,19 +280,19 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         return $this;
     }
 
-    public function setFactoryStoreRequestData(array $requestPayload = [], Model|null $factory = null) : self
+    public function setFactoryStoreRequestData(array $requestPayload = [], Model|null $factory = null): self
     {
         $this->factoryStoreRequestData = $this->factoryToDataArray('store', $requestPayload, $factory);
         return $this;
     }
 
-    public function setFactoryUpdateRequestData(array $requestPayload = [], Model|null $factory = null) : self
+    public function setFactoryUpdateRequestData(array $requestPayload = [], Model|null $factory = null): self
     {
         $this->factoryUpdateRequestData = $this->factoryToDataArray('update', $requestPayload, $factory);
         return $this;
     }
 
-    public function setFactoryDestroyRequestData(array $requestPayload = [], Model|null $factory = null) : self
+    public function setFactoryDestroyRequestData(array $requestPayload = [], Model|null $factory = null): self
     {
         $this->factoryDestroyRequestData = $this->factoryToDataArray('destroy', $requestPayload, $factory);
         return $this;
@@ -302,7 +302,7 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         string $requestMethod = 'store'|'update'|'destroy',
         array $requestPayload = [],
         Model|null $factory = null
-    ) : array
+    ): array
     {
         $factory = $factory != null ? $factory : $this->modelObjectClassWithNamespace::factory()->make();
         $validationRulesAttributeName = "{$requestMethod}ValidationRules";
@@ -319,13 +319,13 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
                 break;
             }
         }
-
-        return \array_merge(array_filter($data), $requestPayload);
+        
+        return \array_merge(\array_filter($data), $requestPayload);
     }
 
-    public function factoryCreate(int $count = 1, array $customFactoryData = [])
+    public function factoryCreate(int $count = 1, array $customFactoryData = [], array $incrementables = [])
     {
-        $results = $this->isPolymorphicModel ? $this->polymorphicFactoryCreate($count, $customFactoryData) : $this->modelObjectClassWithNamespace::factory($count)->create($customFactoryData);
+        $results = $this->isPolymorphicModel ? $this->polymorphicFactoryCreate($count, $customFactoryData) : $this->modelObjectClassWithNamespace::factory($count)->sequence(fn ($sequence) => $this->sequenceValue($sequence->index, $incrementables))->create($customFactoryData);
         return $results->first();
     }
 
@@ -334,29 +334,36 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         return $this->modelObjectClassWithNamespace::factory($count)->for($this->randomPolymorphicRelationClass::factory(), $this->polymorphicRelationMethodName)->create($customFactoryData);
     }
 
-    public function setIsPolymorphicModel() : self
+    public function setIsPolymorphicModel(): self
     {
         $foreignKeyIdColumnName = Str::snake($this->polymorphicRelationMethodName) . '_id';
         $this->isPolymorphicModel = \in_array($foreignKeyIdColumnName, Schema::getColumnListing((new ($this->modelObjectClassWithNamespace))->getTable()));
         return $this;
     }
 
-    public function setPolymorphicRelationMethodName(string $polymorphicRelationMethodName = 'relatedObject') : self
+    public function setPolymorphicRelationMethodName(string $polymorphicRelationMethodName = 'relatedObject'): self
     {
         $this->polymorphicRelationMethodName = $polymorphicRelationMethodName;
         return $this;
     }
 
-    public function setPolymorphicRelationClasses(array $polymorphicRelationClasses = []) : self
+    public function setPolymorphicRelationClasses(array $polymorphicRelationClasses = []): self
     {
         $this->polymorphicRelationClasses = $polymorphicRelationClasses;
         if ($this->isPolymorphicModel && \count($this->polymorphicRelationClasses) == 0) abort(500, 'the method polymorphicRelationClasses must return an array of related polymorphic model classes instead of an empty array');
         return $this;
     }
 
-    public function setRandomPolymorphicRelationClass(string $randomPolymorphicRelationClass = '') : self
+    public function setRandomPolymorphicRelationClass(string $randomPolymorphicRelationClass = ''): self
     {
         $this->randomPolymorphicRelationClass = $randomPolymorphicRelationClass != '' ? $randomPolymorphicRelationClass : $this->faker->randomElement($this->polymorphicRelationClasses);
         return $this;
+    }
+
+    protected function sequenceValue(int $sequenceIndex = 0, array $incrementables = []): array
+    {
+        if ($sequenceIndex == 0) return [];
+
+        return \array_fill_keys($incrementables, $sequenceIndex + 1);
     }
 }

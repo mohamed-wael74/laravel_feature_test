@@ -9,35 +9,35 @@ use Illuminate\Testing\TestResponse as Response;
 
 abstract class TestCaseAssertion extends TestCasePropertiesSetter
 {
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
         $this->withoutMockingConsoleOutput();
         $this->setUpSetter();
     }
 
-    public function assertRouteExists(string $routeMethodName) : self
+    public function assertRouteExists(string $routeMethodName): self
     {
         $routeName = Str::contains($routeMethodName, '.') ? $routeMethodName : "{$this->routeName}.{$routeMethodName}";
         $this->assertTrue(\in_array($routeName, app()->routeList), "This route name {$routeName} is not defined");
         return $this;
     }
 
-    public function assertValidationRulesMatch(array $validationRules = [], ?FormRequest $request = null) : self
+    public function assertValidationRulesMatch(array $validationRules = [], ?FormRequest $request = null): self
     {
         if ($request == null) return $this;
         $this->assertEquals($validationRules, $request->rules());
         return $this;
     }
 
-    public function assertAuthUser(?Response $response = null) : self
+    public function assertAuthUser(?Response $response = null): self
     {
         $user = auth($this->authGuard)->user();
         if ($user == null) $response == null ? $this->assertTrue($user == null, 'Unauthenticated User') : $response->assertStatus(403);
         return $this;
     }
 
-    public function assertResponseStructure(Response $response, bool $isCollection = false) : Response
+    public function assertResponseStructure(Response $response, bool $isCollection = false): Response
     {
         $response->assertJson(function (AssertableJson $json) use ($isCollection) {
             $this->assertStructure($json, $isCollection);
@@ -45,7 +45,7 @@ abstract class TestCaseAssertion extends TestCasePropertiesSetter
         return $response;
     }
 
-    public function assertStructure(AssertableJson $json, bool $isCollection = false, array $expectedStructure = []) : self
+    public function assertStructure(AssertableJson $json, bool $isCollection = false, array $expectedStructure = []): self
     {
         $this->modelObject = $this->modelObject->refresh();
         $expectedStructure = $expectedStructure != null ? $expectedStructure : ($isCollection ? $this->responseCollectionStructure : $this->responseSingleObjectStructure);
@@ -84,7 +84,7 @@ abstract class TestCaseAssertion extends TestCasePropertiesSetter
 
     # Private Helpers
 
-    private function numericSingleObjectStructureKeysToResponseAssertion(AssertableJson $json, $value) : void
+    private function numericSingleObjectStructureKeysToResponseAssertion(AssertableJson $json, $value): void
     {
         if (\is_array($value)) return;
         switch (true) {
@@ -109,7 +109,7 @@ abstract class TestCaseAssertion extends TestCasePropertiesSetter
         }
     }
 
-    private function stringSingleObjectStructureKeysToResponseAssertion(AssertableJson $json, string $key, $value) : void
+    private function stringSingleObjectStructureKeysToResponseAssertion(AssertableJson $json, string $key, $value): void
     {
         switch (true) {
             case $key == $this->modelName && \is_array($value) && $value != null :
@@ -127,7 +127,7 @@ abstract class TestCaseAssertion extends TestCasePropertiesSetter
         }
     }
 
-    private function numericCollectionStructureKeysToResponseAssertion(AssertableJson $json, $value) : void
+    private function numericCollectionStructureKeysToResponseAssertion(AssertableJson $json, $value): void
     {
         if (\is_array($value)) return;
         switch (true) {
@@ -146,7 +146,7 @@ abstract class TestCaseAssertion extends TestCasePropertiesSetter
         }
     }
 
-    private function stringCollectionStructureKeysToResponseAssertion(AssertableJson $json, string $key, $value) : void
+    private function stringCollectionStructureKeysToResponseAssertion(AssertableJson $json, string $key, $value): void
     {
         switch (true) {
             case $key == $this->collectionKeyName && \is_array($value) && $value != null :
