@@ -1,10 +1,10 @@
 <?php
 
-namespace Otas\Testing\Tests\Unit;
+namespace Solutionplus\FeatureTest\Tests\Unit;
 
 use Orchestra\Testbench\TestCase;
 
-class InitialTest extends TestCase 
+class InitialTest extends TestCase
 {
     public function test_initial()
     {

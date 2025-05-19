@@ -1,6 +1,6 @@
 <?php
 
-namespace Otas\Testing\Helpers;
+namespace Solutionplus\FeatureTest\Helpers;
 
 use Illuminate\Support\Str;
 use Laravel\Passport\Passport;

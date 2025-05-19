@@ -4,7 +4,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "omar-ashraf-s",
+            "name": "Omar Ashraf",
             "email": "o.ashraf@otas.net"
         }
     ],
@@ -19,13 +19,13 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Otas\\Testing\\OtasTestingServiceProvider"
+                "Solutionplus\\FeatureTest\\SolutionplusFeatureTestServiceProvider"
             ]
         }
     },    
     "autoload": {
         "psr-4": {
-            "Otas\\Testing\\": "src/"
+            "Solutionplus\\FeatureTest\\": "src/"
         }
     },    
     "autoload-dev": {
