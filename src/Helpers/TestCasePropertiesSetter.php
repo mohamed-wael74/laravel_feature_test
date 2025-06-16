@@ -4,6 +4,7 @@ namespace Solutionplus\FeatureTest\Helpers;
 
 use Illuminate\Support\Str;
 use Laravel\Passport\Passport;
+use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
@@ -100,8 +101,9 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
     public function setAuthUser(?Model $user = null, array $authUserCustomFactoryData = [], $authGuard = ''): self
     {
         $this->setAuthGuard($authGuard);
-
-        $this->authUser = Passport::actingAs($user != null ? $user : $this->authModelClass::factory()->create($authUserCustomFactoryData), [], $this->authGuard);
+        $authDriver = config('feature_test.auth_driver', 'passport');
+        $user = $user ?: $this->authModelClass::factory()->create($authUserCustomFactoryData);
+        $this->authUser = $authDriver == 'passport' ? Passport::actingAs($user, [], $this->authGuard) : Sanctum::actingAs($user, [], $this->authGuard);
         return $this;
     }
 
