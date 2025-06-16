@@ -101,7 +101,7 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
     public function setAuthUser(?Model $user = null, array $authUserCustomFactoryData = [], $authGuard = ''): self
     {
         $this->setAuthGuard($authGuard);
-        $authDriver = config('feature_tests.auth_driver', 'passport');
+        $authDriver = config('feature_test.auth_driver', 'passport');
         $user = $user ?: $this->authModelClass::factory()->create($authUserCustomFactoryData);
         $this->authUser = $authDriver == 'passport' ? Passport::actingAs($user, [], $this->authGuard) : Sanctum::actingAs($user, [], $this->authGuard);
         return $this;

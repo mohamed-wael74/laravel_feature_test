@@ -26,7 +26,7 @@ class SolutionplusFeatureTestServiceProvider extends ServiceProvider
         $this->autoPublishConfig();
 
         $this->publishes([
-            __DIR__ . '/config/feature_tests.php' => config_path('feature_tests.php'),
+            __DIR__ . '/config/feature_test.php' => config_path('feature_test.php'),
         ]);
     }
 
@@ -35,10 +35,10 @@ class SolutionplusFeatureTestServiceProvider extends ServiceProvider
      */
     private function autoPublishConfig()
     {
-        $configPath = config_path('feature_tests.php');
+        $configPath = config_path('feature_test.php');
 
         if (!file_exists($configPath) && $this->app->runningInConsole()) {
-            copy(__DIR__ . '/config/feature_tests.php', $configPath);
+            copy(__DIR__ . '/config/feature_test.php', $configPath);
         }
     }
 }
