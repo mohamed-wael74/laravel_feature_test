@@ -23,6 +23,22 @@ class SolutionplusFeatureTestServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->autoPublishConfig();
+
+        $this->publishes([
+            __DIR__ . '/config/feature_tests.php' => config_path('feature_tests.php'),
+        ]);
+    }
+
+    /**
+     * Auto-publish the config file if it doesn't exist
+     */
+    private function autoPublishConfig()
+    {
+        $configPath = config_path('feature_tests.php');
+
+        if (!file_exists($configPath) && $this->app->runningInConsole()) {
+            copy(__DIR__ . '/config/feature_tests.php', $configPath);
+        }
     }
 }
