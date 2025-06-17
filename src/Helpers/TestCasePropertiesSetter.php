@@ -92,9 +92,10 @@ abstract class TestCasePropertiesSetter extends BaseTestCase
         return $this;
     }
 
-    public function setAuthGuard(string $guard = '') : self
+    public function setAuthGuard(string $guard = ''): self
     {
-        $this->authGuard = $guard != null ? $guard : 'api';
+        $authGuard = config('feature_test.auth_driver', 'passport') == 'passport' ? 'api' : 'sanctum';
+        $this->authGuard = $guard ?: $authGuard;
         return $this;
     }
 
